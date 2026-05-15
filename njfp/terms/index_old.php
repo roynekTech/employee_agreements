@@ -1,7 +1,18 @@
 <?php
-$message = "";
-$status = "";
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $name = htmlspecialchars($_POST['name']);
+//     $email = htmlspecialchars($_POST['email']);
+//     $date = date("Y-m-d H:i:s");
 
+//     $entry = "Name: $name | Email: $email | Date: $date\n";
+
+//     file_put_contents("agreements.txt", $entry, FILE_APPEND);
+
+//     echo "<script>alert('Agreement submitted successfully');</script>";
+// }
+// ?>
+
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name = preg_replace("/[^a-zA-Z0-9]/", "_", $_POST['name']);
@@ -19,13 +30,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = file_put_contents($filename, $content);
 
     if ($result === false) {
-        $message = "Error saving agreement. Please check permissions.";
-        $status = "error";
-    } else {
-        $message = "Agreement submitted successfully 🎉";
-        $status = "success";
+        die("Error writing file. Check folder permissions.");
     }
+
+    echo "<script>alert('Agreement submitted successfully');</script>";
 }
+?>
+
+
+<?php
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+//     $name = preg_replace("/[^a-zA-Z0-9]/", "_", $_POST['name']);
+//     $email = $_POST['email'];
+//     $date = date("Y-m-d_H-i-s");
+
+//     // Use absolute path
+//     $dir = __DIR__ . "/agreements/";
+
+//     if (!file_exists($dir)) {
+//         if (!mkdir($dir, 0755, true)) {
+//             die("Failed to create directory");
+//         }
+//     }
+
+//     $filename = $dir . $name . "_" . $date . ".txt";
+
+//     $content = "Name: $name\n";
+//     $content .= "Email: $email\n";
+//     $content .= "Date: " . date("Y-m-d H:i:s") . "\n";
+//     $content .= "Status: AGREED\n";
+
+//     $result = file_put_contents($filename, $content);
+
+//     if ($result === false) {
+//         die("Error writing file. Check permissions.");
+//     }
+
+//     echo "<script>alert('Agreement submitted successfully');</script>";
+// }
 ?>
 
 <!DOCTYPE html>
@@ -46,12 +89,12 @@ body {
 .container {
     max-width: 850px;
     margin: 50px auto;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    padding: 35px;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.7);
-    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 h1 {
@@ -116,59 +159,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Popup */
-.popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.75);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.popup-content {
-    background: #020617;
-    padding: 30px;
-    border-radius: 16px;
-    text-align: center;
-    width: 320px;
-    animation: scaleIn 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.popup.success .popup-content {
-    border-left: 5px solid #22c55e;
-}
-
-.popup.error .popup-content {
-    border-left: 5px solid #ef4444;
-}
-
-.popup button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    background: #3b82f6;
-    color: white;
-    cursor: pointer;
-}
-
-@keyframes scaleIn {
-    from {
-        transform: scale(0.7);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
 .footer {
     text-align: center;
     margin-top: 20px;
@@ -182,7 +172,9 @@ button:disabled {
 
 <div class="container">
     <h1>Confidentiality & Engagement Agreement</h1>
-    <p class="sub">This agreement governs your participation with Roynek Technologies.</p>
+    <p class="sub">
+        This agreement governs your participation with Roynek Technologies.
+    </p>
 
     <div class="section">
         <strong>1. Confidentiality</strong><br>
@@ -190,7 +182,7 @@ button:disabled {
     </div>
 
     <div class="section">
-    <strong>2. Ownership of Work & Innovation Rights</strong><br>
+        <strong>2. Ownership of Work & Innovation Rights</strong><br>
         Any work, research, or development carried out during your engagement shall be jointly accessible to Roynek Technologies.<br><br>
 
         Where an idea, concept, or innovation originates primarily from you, you retain the right to further develop, expand, or independently build upon that idea.<br><br>
@@ -232,14 +224,6 @@ button:disabled {
     </div>
 </div>
 
-<!-- Popup -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <span id="popupMessage"></span>
-        <button onclick="closePopup()">OK</button>
-    </div>
-</div>
-
 <script>
 const checkbox = document.getElementById("agree");
 const button = document.getElementById("submitBtn");
@@ -247,28 +231,7 @@ const button = document.getElementById("submitBtn");
 checkbox.addEventListener("change", () => {
     button.disabled = !checkbox.checked;
 });
-
-function showPopup(message, type) {
-    const popup = document.getElementById("popup");
-    const popupMessage = document.getElementById("popupMessage");
-
-    popupMessage.innerText = message;
-    popup.classList.add(type);
-    popup.style.display = "flex";
-}
-
-function closePopup() {
-    const popup = document.getElementById("popup");
-    popup.style.display = "none";
-    popup.classList.remove("success", "error");
-}
 </script>
-
-<?php if (!empty($message)): ?>
-<script>
-    showPopup("<?php echo $message; ?>", "<?php echo $status; ?>");
-</script>
-<?php endif; ?>
 
 </body>
 </html>
