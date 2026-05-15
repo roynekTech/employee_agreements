@@ -195,7 +195,7 @@ button:disabled {
 
         Where an idea, concept, or innovation originates primarily from you, you retain the right to further develop, expand, or independently build upon that idea.<br><br>
 
-        However, by participating in this program, you grant Roynek Technologies a **perpetual, non-exclusive right** to use, adapt, commercialize, or build upon any work or research developed during your engagement.<br><br>
+        However, by participating in this program, you grant Roynek Technologies a <b>perpetual, non-exclusive right</b> to use, adapt, commercialize, or build upon any work or research developed during your engagement.<br><br>
 
         This ensures that both you and the organization can continue benefiting from the innovation without restricting each other’s growth.
     </div>
